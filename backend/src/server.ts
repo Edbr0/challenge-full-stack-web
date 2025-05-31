@@ -2,6 +2,7 @@ import express from 'express';
 import { json } from 'body-parser';
 import { connectToDatabase } from './database/prisma';
 import userRoutes from './routes/user.route';
+import errorMiddleware from './middleware/error.middleware';
 
 
 
@@ -13,6 +14,9 @@ app.use(json());
 
 //Routes
 app.use('/api/v1/user', userRoutes);
+
+//Middlewares
+app.use(errorMiddleware);
 
 const startServer = async () => {
     try {
