@@ -9,6 +9,7 @@ jest.mock('../../database/prisma', () => ({
     prisma: {
         user: {
             create: jest.fn(),
+            findUnique: jest.fn(),
         },
     },
 }));
@@ -38,12 +39,14 @@ describe('UserService', () => {
             id: 1,
             name: 'Test User',
             userName: 'test.user',
-            password: '123',
             createdAt: new Date(),
             updatedAt: new Date(),
             cpf: '12345678901',
-            isActive: false,
-            roleId: 0
+            isActive: true,
+            roleId: 1,
+            role: {
+                name: 'User',
+            },
         };
 
         // @ts-ignore
@@ -52,12 +55,20 @@ describe('UserService', () => {
         const result = await userService.createUser(inputData);
 
         expect(prisma.user.create).toHaveBeenCalledWith({
-            data: {
-                ...inputData,
-            },
+            data: inputData,
+            select: {
+                id: true,
+                name: true,
+                userName: true,
+                createdAt: true,
+                updatedAt: true,
+                cpf: true,
+                isActive: true,
+                roleId: true,
+                role: { select: { name: true } }
+            }
         });
 
-        expect(prisma.user.create).toHaveBeenCalledWith({ data: inputData });
         expect(result).toEqual(expectedUser);
     });
 });
