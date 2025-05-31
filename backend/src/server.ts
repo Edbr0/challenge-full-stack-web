@@ -1,4 +1,5 @@
 import express from 'express';
+import { connectToDatabase } from './database/prisma';
 
 
 
@@ -6,10 +7,9 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 
-
-// Start the server
 const startServer = async () => {
     try {
+        await connectToDatabase();
         app.listen(PORT, () => {
             console.log(`Server is running on port:${PORT}`);
         });
