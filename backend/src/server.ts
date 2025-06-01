@@ -3,6 +3,8 @@ import { json } from 'body-parser';
 import { connectToDatabase } from './database/prisma';
 import userRoutes from './routes/user.route';
 import errorMiddleware from './middleware/error.middleware';
+import swaggerUi from 'swagger-ui-express';
+import swaggerSpec from './swagger';
 
 
 
@@ -13,6 +15,7 @@ const PORT = process.env.PORT || 3000;
 app.use(json());
 
 //Routes
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use('/api/v1/user', userRoutes);
 
 //Middlewares
