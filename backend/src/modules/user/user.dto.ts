@@ -1,3 +1,4 @@
+import { z } from 'zod';
 export interface ICreateUser {
   name: string;
   userName: string;
