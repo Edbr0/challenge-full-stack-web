@@ -32,6 +32,22 @@ export class UserRepository {
             where: {
                 userName,
             },
+            select: {
+                id: true,
+                name: true,
+                userName: true,
+                cpf: true,
+                roleId: true,
+                isActive: true,
+                createdAt: true,
+                updatedAt: true,
+                password: true,
+                role: {
+                    select: {
+                        name: true,
+                    },
+                },
+            },
         });
 
         return user;

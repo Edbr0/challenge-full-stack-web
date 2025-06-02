@@ -25,8 +25,8 @@ export class UserService {
 
         const passwordWithHash = await hash(data.password, 10);
 
-        const student = await this.userRepository.create({ ...data, password: passwordWithHash });
+        const user = await this.userRepository.create({ ...data, password: passwordWithHash });
 
-        return student;
+        return user;
     }
 }

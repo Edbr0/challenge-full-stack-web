@@ -8,7 +8,7 @@ export class UserController {
 
     constructor(readonly userService: UserService) {}
 
-    public async createUser(req: Request, res: Response): Promise<void> {
+    public async createUser(req: Request, res: Response) {
         
         const userData = z.object({
             name: z.string().min(1, 'Campo nome é obrigatório'),
