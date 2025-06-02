@@ -5,7 +5,7 @@ import { verifyToken } from '../utils/jwt';
 import { HttpStatus } from '../common/http.status';
 
 export interface AuthRequest extends Request {
-  user_id?: any;
+  user?: any;
 }
 
 const authMiddleware: any = (req: AuthRequest, res: Response, next: NextFunction) => {
@@ -17,7 +17,7 @@ const authMiddleware: any = (req: AuthRequest, res: Response, next: NextFunction
 
     const decoded = verifyToken(token)
 
-    req.user_id = decoded;
+    req.user = decoded;
     next();
 };
 

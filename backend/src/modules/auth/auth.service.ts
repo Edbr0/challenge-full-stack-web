@@ -25,7 +25,7 @@ export class AuthService {
 
         const { password: _, ...userWithoutPassword } = user;
 
-        const token = generateToken(String(user.id));
+        const token = generateToken(String(user.userName));
         return { user: userWithoutPassword, token };
     }
 }
