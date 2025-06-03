@@ -30,7 +30,7 @@ const router = Router();
  *             properties:
  *               userName:
  *                 type: string
- *                 example: joaodasilva
+ *                 example: joao.silva
  *               password:
  *                 type: string
  *                 example: senha123

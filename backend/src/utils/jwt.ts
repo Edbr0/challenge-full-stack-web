@@ -13,7 +13,10 @@ export const generateToken = (userId: string): string => {
 export const verifyToken = (token: string): any => {
     try {
         const decoded = jwt.verify(token, JWT_SECRET);
-        return decoded;
+
+        const { id } = decoded as { id: string };
+        
+        return id;
     } catch (error) {
         throw new ApiError('Token is not valid, authorization denied.', HttpStatus.FORBIDDEN);
     }
