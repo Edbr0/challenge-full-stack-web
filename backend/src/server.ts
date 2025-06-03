@@ -2,6 +2,7 @@ import express from 'express';
 import { json } from 'body-parser';
 import { connectToDatabase } from './database/prisma';
 import userRoutes from './routes/user.route';
+import studentRoutes from './routes/student.route';
 import authRoutes from './routes/auth.routes';
 import errorMiddleware from './middleware/error.middleware';
 import swaggerUi from 'swagger-ui-express';
@@ -20,6 +21,7 @@ app.use(json());
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/user', authMiddleware, userRoutes);
+app.use('/api/v1/student', authMiddleware, studentRoutes);
 
 //Middlewares
 app.use(errorMiddleware);
