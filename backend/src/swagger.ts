@@ -9,6 +9,20 @@ const options: swaggerJSDoc.Options = {
       version: '1.0.0',
       description: 'Documentação gerada automaticamente com Swagger e TypeScript',
     },
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+        },
+      },
+    },
+    security: [
+      {
+        bearerAuth: [],
+      },
+    ],
   },
   apis: ['./src/routes/**/*.ts'], // Aponta para seus arquivos TypeScript
 };
