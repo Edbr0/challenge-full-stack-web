@@ -73,24 +73,32 @@
   </v-sheet>
 </template>
 
-<script>
-  export default {
-    name: 'LoginComponent',
-    data () {
-      return {
-        user: '',
-        password: '',
-        remember: false,
-        showPassword: false,
+<script setup>
+
+  import { ref } from 'vue'
+  import { useRouter } from 'vue-router'
+  import { useAuthStore } from '@/store/index'
+
+  const user = ref('')
+  const password = ref('')
+  const remember = ref(false)
+  const showPassword = ref(false)
+  const router = useRouter()
+
+  const auth = useAuthStore()
+  async function login () {
+    try {
+      const { status, message } = await auth.login(user.value, password.value)
+
+      if (status === 'success') {
+        router.push('/alunos')
+      } else {
+        alert(message)
       }
-    },
-    methods: {
-      login () {
-        // Simulação de autenticação
-        localStorage.setItem('authenticated', 'true')
-        this.$router.push('/alunos')
-      },
-    },
+    } catch (error) {
+      alert('Erro ao realizar login: ' + error.message)
+      console.error('Erro ao realizar login:', error)
+    }
   }
 </script>
 
