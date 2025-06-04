@@ -8,11 +8,13 @@ import errorMiddleware from './middleware/error.middleware';
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from './swagger';
 import authMiddleware from './middleware/auth.middleware';
+import cors from 'cors'
 
 
+const PORT = process.env.PORT || 3000;
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+app.use(cors());
 
 
 app.use(json());

@@ -37,21 +37,7 @@ const router = Router();
  *     responses:
  *       200:
  *         description: Login realizado com sucesso
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Login realizado com sucesso!
- *                 data:
- *                   type: string
- *                   description: Token JWT gerado
- *                   example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
- *                 statusCode:
- *                   type: number
- *                   example: 200
+ *         
  *       401:
  *         description: Credenciais inválidas
  */
