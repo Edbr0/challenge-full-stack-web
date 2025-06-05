@@ -121,7 +121,7 @@
       }
 
       saveSession()
-      router.push('/alunos')
+      router.push('/students')
     } catch (error) {
       console.log(error)
       alert('Erro ao realizar login. Tente novamente.', 'error')

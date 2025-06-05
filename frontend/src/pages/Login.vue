@@ -16,7 +16,7 @@
               contain
               height="90"
               src="/src/assets/logo.svg"
-            ><img>
+            >
             <v-card-title class="text-h6 text-md-h5 text-lg-h4 mb-2 text-dark">
               Bem-vindo à plataforma +a Educação.
             </v-card-title>
@@ -24,7 +24,7 @@
           </v-col>
           <!-- Lado direito: Formulário -->
           <v-col
-            class="d-flex align-center justify-center bg-primary"
+            class="d-flex align-center justify-center bg-dark"
             cols="12"
             md="6"
             style="min-height: 100vh;"
