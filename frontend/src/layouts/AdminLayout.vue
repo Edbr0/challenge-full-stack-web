@@ -22,6 +22,12 @@
             {{ currentMenuText }}
           </span>
         </v-col>
+        <v-col class="d-flex justify-end mr-5" cols="auto">
+          <v-btn color="error" variant="tonal" @click="showDialog = true">
+            <v-icon left>mdi-logout</v-icon>
+            Sair
+          </v-btn>
+        </v-col>
       </v-row>
     </v-app-bar>
 
@@ -41,6 +47,15 @@
               </v-list-item>
             </v-list>
           </v-navigation-drawer>
+          <ConfirmDialog
+            v-model="showDialog"
+            cancel-text="Cancelar"
+            confirm-text="Sim, sair"
+            message="Tem certeza que deseja sair do sistema?"
+            title="Logout"
+            @cancel="handleCancel"
+            @confirm="handleConfirm"
+          />
           <v-col>
             <router-view />
           </v-col>
@@ -51,11 +66,15 @@
 </template>
 
 <script setup>
-  import { computed } from 'vue'
+  import { computed, ref } from 'vue'
   import { useRoute, useRouter } from 'vue-router'
+  import ConfirmDialog from '@/components/ui/ConfirmDialog.vue'
+  import { useAuthStore } from '@/store/index'
 
   const router = useRouter()
   const route = useRoute()
+  const showDialog = ref(false)
+  const authStore = useAuthStore()
 
   const menus = [
     { title: 'Alunos', route: '/students', isAdmin: true },
@@ -75,4 +94,15 @@
   function goTo (route) {
     router.push(route)
   }
+
+  async function handleConfirm () {
+    authStore.logout()
+    showDialog.value = false
+    router.push('/')
+  }
+
+  function handleCancel () {
+    showDialog.value = false
+  }
+
 </script>
