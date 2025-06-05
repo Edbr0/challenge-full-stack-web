@@ -1,5 +1,16 @@
 # Relatório de Arquitetura e Bibliotecas
 
+
+## 🚀 Link de Acesso à Aplicação
+
+**Acesse a aplicação em:**  
+🔗 [https://challenge-full-stack-n1usb9e5r.vercel.app/](https://challenge-full-stack-n1usb9e5r.vercel.app/)
+
+> ⚠️ **Atenção:** No primeiro acesso, a aplicação pode demorar cerca de 50 segundos para responder devido à hospedagem gratuita.
+
+---
+
+
 ## Frontend
 
 **Decisão da arquitetura utilizada:**
@@ -15,6 +26,9 @@
 - [Axios](https://axios-http.com/) — Requisições HTTP.
 - [unplugin-vue-components](https://github.com/antfu/unplugin-vue-components) — Importação automática de componentes.
 - [Vite](https://vitejs.dev/) — Bundler e servidor de desenvolvimento.
+
+**Hospedagem:**  
+Frontend hospedado na **Vercel**.
 
 ---
 
@@ -35,6 +49,22 @@
 - [Jsonwebtoken](https://github.com/auth0/node-jsonwebtoken) — Autenticação JWT.
 - [Jest](https://jestjs.io/) — Testes automatizados.
 
+**Hospedagem:**  
+Backend hospedado na **Render**.  
+Banco de dados Postgres hospedado na **Railway**.
 
 **Documentação da API:**  
 A documentação do backend está disponível em: [https://challenge-full-stack-web.onrender.com/api-docs](https://challenge-full-stack-web.onrender.com/api-docs)
+
+
+---
+
+## Usuários de Teste
+
+**Usuário admin**  
+Usuário: `adm`  
+Senha: `senha123`
+
+**Usuário não admin**  
+Usuário: `joao.silva`  
+Senha: `senha123`
