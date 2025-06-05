@@ -31,7 +31,7 @@
           <v-navigation-drawer class="pa-0" color="dark" permanent width="220">
             <v-list>
               <v-list-item
-                v-for="item in filteredMenus"
+                v-for="item in menus"
                 :key="item.title"
                 color="primary"
                 variant="tonal"
@@ -53,25 +53,22 @@
 <script setup>
   import { computed } from 'vue'
   import { useRoute, useRouter } from 'vue-router'
-  import { useAuthStore } from '@/store'
 
-  const store = useAuthStore()
   const router = useRouter()
   const route = useRoute()
 
-  const isAdmin = store.isAdmin()
-
   const menus = [
-    { title: 'Alunos', route: '/students', text: 'Consulta de alunos', isAdmin: true },
+    { title: 'Alunos', route: '/students', isAdmin: true },
   ]
 
-  const filteredMenus = computed(() => {
-    return menus.filter(item => isAdmin || !item.isAdmin)
-  })
+  const titles = [
+    { route: '/students', title: 'Consulta de alunos' },
+    { route: '/students/register', title: 'Cadastro de aluno' },
+  ]
 
   const currentMenuText = computed(() => {
-    const menu = menus.find(item => item.route === route.path)
-    return menu ? menu.text : ''
+    const menu = titles.find(item => item.route === route.path)
+    return menu ? menu.title : ''
   })
 
   function goTo (route) {
