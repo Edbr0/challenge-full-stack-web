@@ -6,6 +6,7 @@ export const useAuthStore = defineStore('auth', {
   state: () => ({
     token: sessionStorage.getItem('token') || null,
     user: null as User | null,
+    role: null as number | null,
     error: null,
   }),
   actions: {
@@ -16,13 +17,21 @@ export const useAuthStore = defineStore('auth', {
 
       this.token = response?.data?.token || null
       this.user = response?.data?.user || null
+      this.role = response?.data?.user?.roleId || null
 
-      sessionStorage.setItem('token', this.token || '')
       return response
     },
+
+    isAdmin () {
+      return this.role === 1
+    },
+
+    getToken () {
+      return this.token
+    },
+
     logout () {
       this.token = null
-      sessionStorage.removeItem('token')
     },
   },
 })
