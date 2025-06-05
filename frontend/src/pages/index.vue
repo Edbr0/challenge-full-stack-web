@@ -36,27 +36,9 @@
     </v-main>
   </v-app>
 </template>
-
-<script>
-
+<script setup>
   import Login from '@/components/forms/Login.vue'
 
-  export default {
-    name: 'LoginView',
-    components: {
-      Login,
-    },
-    data () {
-      return {}
-    },
-    methods: {
-      login () {
-        // Simulação de autenticação
-        localStorage.setItem('authenticated', 'true')
-        this.$router.push('/alunos')
-      },
-    },
-  }
 </script>
 
 <style scoped>

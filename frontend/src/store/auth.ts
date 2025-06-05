@@ -11,17 +11,14 @@ export const useAuthStore = defineStore('auth', {
   actions: {
     async login (userName: string, password: string) {
       this.error = null
-      try {
-        const response = await service.login(userName, password)
-        this.token = response.data.token
-        this.user = response.data.user
-        sessionStorage.setItem('token', this.token)
-        console.log('Login successful:', response.data)
-        return response
-      } catch (error) {
-        this.error = error.response?.data?.message || 'Erro ao fazer login'
-        throw error
-      }
+
+      const response = await service.login(userName, password)
+
+      this.token = response?.data?.token || null
+      this.user = response?.data?.user || null
+
+      sessionStorage.setItem('token', this.token || '')
+      return response
     },
     logout () {
       this.token = null

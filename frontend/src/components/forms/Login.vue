@@ -63,6 +63,7 @@
         class="mb-2"
         color="accent"
         dark
+        :loading="loading"
         size="large"
         style="font-weight: 600;"
         type="submit"
@@ -75,7 +76,7 @@
 
 <script setup>
 
-  import { ref } from 'vue'
+  import { inject, onMounted, ref } from 'vue'
   import { useRouter } from 'vue-router'
   import { useAuthStore } from '@/store/index'
 
@@ -84,22 +85,54 @@
   const remember = ref(false)
   const showPassword = ref(false)
   const router = useRouter()
+  const alert = inject('showGlobalAlert')
+  const loading = ref(false)
 
   const auth = useAuthStore()
-  async function login () {
-    try {
-      const { status, message } = await auth.login(user.value, password.value)
 
-      if (status === 'success') {
-        router.push('/alunos')
-      } else {
-        alert(message)
-      }
-    } catch (error) {
-      alert('Erro ao realizar login: ' + error.message)
-      console.error('Erro ao realizar login:', error)
+  function saveSession () {
+    if (remember.value) {
+      localStorage.setItem('_u', user.value)
+      localStorage.setItem('_p', password.value)
+      localStorage.setItem('_r', remember.value)
+    } else {
+      localStorage.removeItem('_u')
+      localStorage.removeItem('_p')
+      localStorage.removeItem('_r')
     }
   }
+
+  function getSession () {
+    user.value = localStorage.getItem('_u') || ''
+    password.value = localStorage.getItem('_p') || ''
+    remember.value = localStorage.getItem('_r') === 'true'
+  }
+
+  async function login () {
+    try {
+      loading.value = true
+
+      const { status, message, statusCode } = await auth.login(user.value, password.value)
+
+      if (!status) {
+        return statusCode >= 400 && statusCode < 500
+          ? alert(message, 'warning')
+          : alert('Erro interno do servidor. Tente novamente mais tarde.', 'error')
+      }
+
+      saveSession()
+      router.push('/alunos')
+    } catch (error) {
+      console.log(error)
+      alert('Erro ao realizar login. Tente novamente.', 'error')
+    } finally {
+      loading.value = false
+    }
+  }
+
+  onMounted(() => {
+    getSession()
+  })
 </script>
 
 <style scoped>

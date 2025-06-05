@@ -15,9 +15,20 @@ export async function login (userName: string, password: string) {
     const response = await api.post('/api/v1/auth', { userName, password })
     return response.data as ResponseApi<LoginResponseData>
   } catch (error) {
+    let errorMessage = 'Erro ao fazer login'
+
     if (axios.isAxiosError(error)) {
-      throw new Error(error.response?.data?.message || 'Erro ao fazer login')
+      if (error.response?.data.errors) {
+        errorMessage = error.response.data.errors[0].message || 'Erro ao fazer login'
+      } else if (error.response?.data?.message) {
+        errorMessage = error.response.data.message || 'Erro ao fazer login'
+      }
+      return {
+        status: false,
+        message: errorMessage,
+        data: null,
+        statusCode: error.response?.data.statusCode || 500,
+      }
     }
-    throw new Error('Erro ao fazer login')
   }
 }
