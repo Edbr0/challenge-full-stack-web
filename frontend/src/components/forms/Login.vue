@@ -71,6 +71,18 @@
         ENTRAR
       </v-btn>
     </v-form>
+    <Dialog v-model="dialogOpen" :max-width="600">
+      <template #title>
+        Informativo
+      </template>
+      <template #default>
+        Voce não tem permissão para acessar este sistema.
+      </template>
+      <template #actions="{ close }">
+        <v-spacer />
+        <v-btn color="primary" @click="close()">Fechar</v-btn>
+      </template>
+    </Dialog>
   </v-sheet>
 </template>
 
@@ -79,6 +91,7 @@
   import { inject, onMounted, ref } from 'vue'
   import { useRouter } from 'vue-router'
   import { useAuthStore } from '@/store/index'
+  import Dialog from '../ui/Dialog.vue'
 
   const user = ref('')
   const password = ref('')
@@ -87,6 +100,7 @@
   const router = useRouter()
   const alert = inject('showGlobalAlert')
   const loading = ref(false)
+  const dialogOpen = ref(false)
 
   const auth = useAuthStore()
 
@@ -118,6 +132,11 @@
         return statusCode >= 400 && statusCode < 500
           ? alert(message, 'warning')
           : alert('Erro interno do servidor. Tente novamente mais tarde.', 'error')
+      }
+
+      if (!auth.isAdmin()) {
+        dialogOpen.value = true
+        return
       }
 
       saveSession()
