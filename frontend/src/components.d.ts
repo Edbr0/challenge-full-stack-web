@@ -9,6 +9,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     Alert: typeof import('./components/ui/Alert.vue')['default']
+    ConfirmDialog: typeof import('./components/ui/ConfirmDialog.vue')['default']
     Dialog: typeof import('./components/ui/Dialog.vue')['default']
     HelloWorld: typeof import('./components/HelloWorld.vue')['default']
     Login: typeof import('./components/forms/Login.vue')['default']
