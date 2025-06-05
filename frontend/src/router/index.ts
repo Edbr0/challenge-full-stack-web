@@ -9,9 +9,8 @@ import { createRouter, createWebHistory } from 'vue-router/auto'
 import AdminLayout from '@/layouts/AdminLayout.vue'
 
 import Login from '@/pages/Login.vue'
-import { StudentsList, StudentRegister } from '@/pages/Student/index'
+import { StudentRegister, StudentsList, StudentUpdate } from '@/pages/Student/index'
 import { useAuthStore } from '@/store'
-
 
 const routes = [
   {
@@ -29,6 +28,10 @@ const routes = [
       {
         path: 'students/register',
         component: StudentRegister,
+      },
+      {
+        path: 'students/update',
+        component: StudentUpdate,
       },
     ],
   },

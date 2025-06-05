@@ -40,6 +40,7 @@
                 outlined
                 placeholder="Informe o registro acadêmico"
                 prepend-inner-icon="mdi-card-account-details"
+                readonly
               />
             </v-col>
             <v-col cols="12">
@@ -53,6 +54,7 @@
                 outlined
                 placeholder="Informe o número do documento"
                 prepend-inner-icon="mdi-card-account-details-outline"
+                readonly
               />
             </v-col>
             <v-col class="d-flex justify-end" cols="12">
@@ -71,7 +73,7 @@
 </template>
 
 <script setup>
-  import { inject, reactive, ref } from 'vue'
+  import { inject, onMounted, reactive, ref } from 'vue'
   import { useRouter } from 'vue-router'
   import { useAuthStore, useStudentStore } from '@/store/index'
 
@@ -114,17 +116,17 @@
     if (validateFields()) {
       loading.value = true
       try {
-        const { status, message, statusCode } = await studentStore.createStudent({ ...student, createdBy: authStore.user.userName })
+        const { status, message, statusCode } = await studentStore.updateStudent(studentStore.student.id, { ...student, updatedBy: authStore.user.userName })
 
         if (!status) {
           alert(message, statusCode >= 500 ? 'error' : 'warning')
           return
         }
-        alert('Aluno cadastrado com sucesso')
+        alert('Aluno aualizado com sucesso')
         closeForm()
       } catch (error) {
-        alert('Erro ao cadastrar alunos: ' + error.message, 'error')
-        console.error('Erro ao cadastrar alunos:', error)
+        alert('Erro ao atualizar alunos: ' + error.message, 'error')
+        console.error('Erro ao atualizar alunos:', error)
       } finally {
         loading.value = false
       }
@@ -147,4 +149,18 @@
     resetForm()
     router.push('/students')
   }
+
+  function fillFormFromStore () {
+    if (studentStore.student) {
+      student.name = studentStore.student.name || ''
+      student.email = studentStore.student.email || ''
+      student.ra = studentStore.student.ra || ''
+      student.cpf = studentStore.student.cpf || ''
+    }
+  }
+
+  onMounted(() => {
+    fillFormFromStore()
+  })
+
 </script>

@@ -4,6 +4,7 @@
     <v-row align="end" class="mb-4">
       <v-col cols="12" lg="4" md="6">
         <v-text-field
+          v-model="search"
           color="dark"
           density="compact"
           hide-details
@@ -18,6 +19,7 @@
           prepend-icon="mdi-magnify"
           style="color: #FFF;"
           variant="flat"
+          @click="handleSearch"
         >
           Pesquisar
         </v-btn>
@@ -35,18 +37,28 @@
       </v-col>
     </v-row>
 
-    <Table :columns="columns" :items="students">
+    <Table :columns="columns" :items="filteredStudents">
       <template #actions="{ item }">
         <v-btn color="accent" size="small" variant="text" @click="editStudent(item)">Editar</v-btn>
-        <v-btn color="primary" size="small" variant="text">Excluir</v-btn>
+        <v-btn color="primary" size="small" variant="text" @click="deleteStudent(item)">Excluir</v-btn>
       </template>
     </Table>
+    <ConfirmDialog
+      v-model="showDialog"
+      cancel-text="Cancelar"
+      confirm-text="Sim, excluir"
+      message="Tem certeza que deseja excluir este aluno?"
+      title="Excluir aluno"
+      @cancel="handleCancel"
+      @confirm="handleConfirm"
+    />
   </v-sheet>
 </template>
 
 <script setup>
-  import { inject, onMounted, ref } from 'vue'
+  import { computed, inject, onMounted, ref } from 'vue'
   import { useRouter } from 'vue-router'
+  import ConfirmDialog from '@/components/ui/ConfirmDialog.vue'
   import Table from '@/components/ui/Table.vue'
   import { useStudentStore } from '@/store/index'
 
@@ -55,6 +67,8 @@
   const loading = ref(false)
   const studentStore = useStudentStore()
   const students = ref([])
+  const search = ref('')
+  const showDialog = ref(false)
 
   const columns = [
     { label: '▼ Registro Acadêmico', key: 'ra' },
@@ -82,12 +96,58 @@
   }
 
   function editStudent (item) {
-    // Implementar lógica de edição
-    console.log('Editando aluno:', item)
+    studentStore.student = item
+    goToFormUpdate()
+  }
+
+  function deleteStudent (item) {
+    studentStore.student = item
+    showDialog.value = true
   }
 
   function goToFormRegister () {
     router.push('/students/register')
+  }
+
+  function goToFormUpdate () {
+    router.push('/students/update')
+  }
+
+  const filteredStudents = computed(() => {
+    if (!search.value) return students.value
+    return students.value.filter(student =>
+      student.name.toLowerCase().includes(search.value.toLowerCase()),
+    )
+  })
+
+  function handleSearch () {
+    if (!search.value) return students.value
+    filteredStudents.value = students.value.filter(student =>
+      student.name.toLowerCase().includes(search.value.toLowerCase()),
+    )
+  }
+
+  async function handleConfirm () {
+    loading.value = true
+    try {
+      const { status, message, statusCode } = await studentStore.deleteStudent(studentStore.student.id)
+
+      if (!status) {
+        alert(message, statusCode >= 500 ? 'error' : 'warning')
+        return
+      }
+      alert('Aluno excluido com sucesso')
+      students.value = studentStore.students || []
+    } catch (error) {
+      alert('Erro ao excluir aluno: ' + error.message, 'error')
+      console.error('Erro ao excluir aluno:', error)
+    } finally {
+      loading.value = false
+    }
+  }
+
+  function handleCancel () {
+    showDialog.value = false
   }
 
   onMounted(async () => {

@@ -64,6 +64,7 @@
   const titles = [
     { route: '/students', title: 'Consulta de alunos' },
     { route: '/students/register', title: 'Cadastro de aluno' },
+    { route: '/students/update', title: 'Cadastro de aluno' },
   ]
 
   const currentMenuText = computed(() => {

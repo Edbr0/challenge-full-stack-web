@@ -1,7 +1,9 @@
 <template>
   <v-data-table-server
+    v-model:items-per-page="itemsPerPage"
     class="elevation-1"
     density="comfortable"
+    :items-length="items.length"
     :loading="loading"
     loading-text="Carregando..."
   >
@@ -27,9 +29,13 @@
 </template>
 
 <script setup>
+  import { ref } from 'vue'
+
   defineProps({
     items: { type: Array, required: true },
     columns: { type: Array, required: true },
     loading: { type: Boolean, default: false },
   })
+
+  const itemsPerPage = ref(10)
 </script>
