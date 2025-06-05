@@ -10,3 +10,19 @@ export type Student = {
   updatedBy: string | null
   updatedAt: Date | null
 }
+
+export type TCreateStudent = {
+  name: string
+  email: string
+  ra: string
+  cpf: string
+  createdBy: string
+}
+
+export type TUpdateStudent = {
+  name: string
+  email: string
+  ra: string
+  cpf: string
+  updatedBy: string
+}

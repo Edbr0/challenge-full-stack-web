@@ -10,8 +10,6 @@ export const useStudentStore = defineStore('student', {
     async getAllStudents () {
       const response = await service.getAllStudents()
 
-      console.log('getAllStudents', response)
-
       this.students = response?.data || null
 
       return response

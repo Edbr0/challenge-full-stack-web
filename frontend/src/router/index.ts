@@ -9,13 +9,14 @@ import { createRouter, createWebHistory } from 'vue-router/auto'
 import AdminLayout from '@/layouts/AdminLayout.vue'
 
 import Login from '@/pages/Login.vue'
-import Students from '@/pages/Students.vue'
+import { StudentsList, StudentRegister } from '@/pages/Student/index'
 import { useAuthStore } from '@/store'
+
 
 const routes = [
   {
     path: '/',
-    component: Login, // Login sem layout
+    component: Login,
   },
   {
     path: '/',
@@ -23,9 +24,12 @@ const routes = [
     children: [
       {
         path: 'students',
-        component: Students,
+        component: StudentsList,
       },
-      // outras rotas protegidas aqui
+      {
+        path: 'students/register',
+        component: StudentRegister,
+      },
     ],
   },
 ]
