@@ -4,7 +4,7 @@
 ## 🚀 Link de Acesso à Aplicação
 
 **Acesse a aplicação em:**  
-🔗 [https://challenge-full-stack-n1usb9e5r.vercel.app/](https://challenge-full-stack-n1usb9e5r.vercel.app/)
+🔗 [https://challenge-full-stack-web-one.vercel.app/](https://challenge-full-stack-web-one.vercel.app/)
 
 > ⚠️ **Atenção:** No primeiro acesso, a aplicação pode demorar cerca de 50 segundos para responder devido à hospedagem gratuita.
 
