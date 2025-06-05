@@ -65,14 +65,14 @@
   async function fetchStudents () {
     loading.value = true
     try {
-      const { status, message, statusCode, data } = await studentStore.getAllStudents()
+      const { status, message, statusCode } = await studentStore.getAllStudents()
 
       if (!status) {
         alert(message, statusCode >= 500 ? 'error' : 'warning')
         return
       }
 
-      students.value = data || []
+      students.value = studentStore.students || []
     } catch (error) {
       alert('Erro ao buscar alunos: ' + error.message, 'error')
       console.error('Erro ao buscar alunos:', error)

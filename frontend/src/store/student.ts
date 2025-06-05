@@ -1,4 +1,4 @@
-import type { Student } from '@/types/student'
+import type { Student, TCreateStudent } from '@/types/student'
 import { defineStore } from 'pinia'
 import * as service from '../service/index'
 
@@ -12,6 +12,15 @@ export const useStudentStore = defineStore('student', {
 
       this.students = response?.data || null
 
+      return response
+    },
+
+    async createStudent (student: TCreateStudent) {
+      const response = await service.createStudent(student)
+
+      if (response?.status !== false) {
+        await this.getAllStudents()
+      }
       return response
     },
   },

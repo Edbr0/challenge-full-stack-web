@@ -7,10 +7,10 @@
           <v-row>
             <v-col cols="12">
               <v-text-field
-                v-model="student.nome"
+                v-model="student.name"
                 class="mb-3"
                 dense
-                :error-messages="errors.nome"
+                :error-messages="errors.name"
                 label="Nome"
                 outlined
                 placeholder="Informe o nome completo"
@@ -49,13 +49,14 @@
                 dense
                 :error-messages="errors.cpf"
                 label="CPF"
+                maxlength="11"
                 outlined
                 placeholder="Informe o número do documento"
                 prepend-inner-icon="mdi-card-account-details-outline"
               />
             </v-col>
             <v-col class="d-flex justify-end" cols="12">
-              <v-btn class="mr-2" color="primary" depressed @click="resetForm">
+              <v-btn class="mr-2" color="primary" depressed @click="closeForm">
                 Cancelar
               </v-btn>
               <v-btn class="white--text font-weight-bold" color="accent" depressed @click="handleSubmit">
@@ -70,17 +71,25 @@
 </template>
 
 <script setup>
-  import { reactive, ref } from 'vue'
+  import { inject, reactive, ref } from 'vue'
+  import { useRouter } from 'vue-router'
+  import { useAuthStore, useStudentStore } from '@/store/index'
+
+  const router = useRouter()
+  const alert = inject('showGlobalAlert')
+  const loading = ref(false)
+  const studentStore = useStudentStore()
+  const authStore = useAuthStore()
 
   const student = reactive({
-    nome: '',
+    name: '',
     email: '',
     ra: '',
     cpf: '',
   })
 
   const errors = reactive({
-    nome: '',
+    name: '',
     email: '',
     ra: '',
     cpf: '',
@@ -90,33 +99,52 @@
 
   function validateFields () {
     let valid = true
-    errors.nome = student.nome ? '' : 'Nome é obrigatório'
+    errors.name = student.name ? '' : 'Nome é obrigatório'
     errors.email = student.email ? '' : 'E-mail é obrigatório'
     errors.ra = student.ra ? '' : 'RA é obrigatório'
     errors.cpf = student.cpf ? '' : 'CPF é obrigatório'
 
-    if (!student.nome || !student.email || !student.ra || !student.cpf) {
+    if (!student.name || !student.email || !student.ra || !student.cpf) {
       valid = false
     }
     return valid
   }
 
-  function handleSubmit () {
+  async function handleSubmit () {
     if (validateFields()) {
-      // Aqui você pode enviar os dados
-      alert('Dados válidos!')
+      loading.value = true
+      try {
+        const { status, message, statusCode } = await studentStore.createStudent({ ...student, createdBy: authStore.user.userName })
+
+        if (!status) {
+          alert(message, statusCode >= 500 ? 'error' : 'warning')
+          return
+        }
+        alert('Aluno cadastrado com sucesso')
+        closeForm()
+      } catch (error) {
+        alert('Erro ao buscar alunos: ' + error.message, 'error')
+        console.error('Erro ao buscar alunos:', error)
+      } finally {
+        loading.value = false
+      }
     }
   }
 
   function resetForm () {
-    student.nome = ''
+    student.name = ''
     student.email = ''
     student.ra = ''
     student.cpf = ''
-    errors.nome = ''
+    errors.name = ''
     errors.email = ''
     errors.ra = ''
     errors.cpf = ''
     if (formRef.value) formRef.value.resetValidation()
+  }
+
+  function closeForm () {
+    resetForm()
+    router.push('/students')
   }
 </script>
